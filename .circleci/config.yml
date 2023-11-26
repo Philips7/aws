@@ -1,0 +1,20 @@
+version: 2.1
+
+jobs:
+  say-hello:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "Hello"
+  say-hi:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "Hi"
+
+workflows:
+  hello_and_hi:
+    jobs:
+      - say-hello
+      - say-hi
+         
