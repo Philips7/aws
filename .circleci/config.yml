@@ -5,12 +5,16 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
+      - checkout
       - run: echo "Hello"
   say-hi:
     docker:
       - image: cimg/base:stable
     steps:
-      - run: echo "Hi"
+      - checkout
+      - run:
+          name: "Echo hi"
+          command: echo "Hi"
 
 workflows:
   hello_and_hi:
