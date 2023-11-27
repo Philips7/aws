@@ -63,13 +63,14 @@ jobs:
               - node_modules
 
   deploy:
+    working_directory: ~/repo
     docker:
       - image: cimg/aws:2023.09
     steps:
       - checkout
       - attach_workspace:
           at: ~/repo
-      - run: ls
+      - run: ls -d $PWD/*
       - run:
           name: "Deploy app"
           command: aws s3 sync ./dist/ s3://my-test-bucket-7878 --delete
