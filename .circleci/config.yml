@@ -13,6 +13,7 @@ jobs:
           paths:
             - foo/bar
             - baz
+      - run: ls -d $PWD/*
 
 
   install:
