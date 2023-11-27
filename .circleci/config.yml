@@ -42,7 +42,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - repo
+            - repo/build
 
   build:
     docker:
