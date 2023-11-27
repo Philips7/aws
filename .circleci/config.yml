@@ -36,6 +36,9 @@ jobs:
       - run:
           name: "Build application"
           command: yarn build
+      - run:
+          name: "Deploy app"
+          command: echo "Deploy"
 
   deploy:
     docker:
@@ -53,12 +56,12 @@ workflows:
       - install:
           requires:
             - checkout_code
-      - build:
-          requires:
-            - install
-      - deploy:
-          requires:
-            - build
+#      - build:
+#          requires:
+#            - install
+#      - deploy:
+#          requires:
+#            - build
 
 # jobs:
 #   say-hello:
