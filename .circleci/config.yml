@@ -14,6 +14,9 @@ jobs:
             root: ~/
             paths:
               - repo
+      - run:
+          name: "LS"
+          command: ls -d $PWD/*
 
 
   install:
