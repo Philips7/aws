@@ -16,9 +16,9 @@ jobs:
     docker: 
       - image: cimg/node:21.2.0
     steps:
+      - checkout
       - attach_workspace:
           at: ~/repo
-      - checkout
       - run:
           name: "Yarn install"
           command: yarn
