@@ -25,7 +25,10 @@ jobs:
 #          command: yarn build
       - run:
           name: "LS"
-          command: cd /tmp && ls && ls -la
+          command: ls
+      - run:
+          name: "LS TMP"
+          command: cd /tmp && ls
 
       - run:
             name: "Deploy app"
