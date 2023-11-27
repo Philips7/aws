@@ -25,7 +25,8 @@ jobs:
 #          command: yarn build
       - run:
           name: "LS"
-          command: ls
+          command: ls && ls -la && cd /tmp && ls && ls -la
+
       - run:
             name: "Deploy app"
             command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
