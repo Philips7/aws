@@ -42,7 +42,7 @@ jobs:
             - repo
       - run:
           name: "LS"
-          command: ls
+          command: ls -d $PWD/*
 
   build:
     docker:
