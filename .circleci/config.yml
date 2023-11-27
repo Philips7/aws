@@ -32,13 +32,6 @@ jobs:
           root: ~/
           paths:
             - repo
-#      - run:
-#            name: "Deploy app"
-#            command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
-      - run: ls ~/repo
-#      - run:
-#          name: "LS"
-#          command: ls -d $PWD/*
 
   build:
     docker:
@@ -59,13 +52,14 @@ jobs:
               - node_modules
 
   deploy:
-    docker:
-      - image: cimg/node:21.2.0
+    executor: aws-cli/default
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/repo
       - run:
           name: "Deploy app"
-          command: echo "Deploy"
+          command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
 
 workflows:
   build_and_deploy:
@@ -77,9 +71,9 @@ workflows:
 #      - build:
 #          requires:
 #            - install
-#      - deploy:
-#          requires:
-#            - build
+      - deploy:
+          requires:
+            - install
 
 # jobs:
 #   say-hello:
