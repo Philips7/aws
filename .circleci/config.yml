@@ -52,7 +52,8 @@ jobs:
               - node_modules
 
   deploy:
-    executor: aws-cli/default
+    docker:
+      - image: aws-cli/default
     steps:
       - checkout
       - attach_workspace:
