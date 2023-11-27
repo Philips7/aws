@@ -8,6 +8,12 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - checkout
+      - persist_to_workspace:
+          root: /tmp/dir
+          paths:
+            - foo/bar
+            - baz
+
 
   install:
     docker: 
