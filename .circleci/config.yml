@@ -1,5 +1,7 @@
 version: 2.1
 
+working_directory: /tmp
+
 orbs:
   aws-cli: circleci/aws-cli@4.1.2
 
@@ -15,18 +17,15 @@ jobs:
       - image: cimg/node:21.2.0
     steps:
       - checkout
-      - run:
-          name: "Yarn install"
-          command: yarn
-      - run:
-          name: "Build application"
-          command: yarn build
+#      - run:
+#          name: "Yarn install"
+#          command: yarn
+#      - run:
+#          name: "Build application"
+#          command: yarn build
       - run:
           name: "LS"
           command: ls
-      - run: # Install the AWS CLI if it is not already included in the docker image
-          name: Install awscli
-          command: sudo pip install awscli
       - run:
             name: "Deploy app"
             command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
