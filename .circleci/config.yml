@@ -55,10 +55,10 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/repo
-      - run: aws --version
+      - run: ls
       - run:
           name: "Deploy app"
-          command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
+          command: aws s3 sync ./dist/ s3://my-test-bucket-7878 --delete
 
 workflows:
   build_and_deploy:
