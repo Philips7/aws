@@ -17,22 +17,25 @@ jobs:
       - image: cimg/node:21.2.0
     steps:
       - checkout
-#      - run:
-#          name: "Yarn install"
-#          command: yarn
-#      - run:
-#          name: "Build application"
-#          command: yarn build
+      - run:
+          name: "Yarn install"
+          command: yarn
+      - run:
+          name: "Build application"
+          command: yarn build
       - run:
           name: "LS"
           command: ls
+      - persist_to_workspace:
+            root: ~/
+            paths:
+                - repo/dist
+#      - run:
+#            name: "Deploy app"
+#            command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
       - run:
-          name: "LS TMP"
-          command: cd /repo && ls
-
-      - run:
-            name: "Deploy app"
-            command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
+          name: "LS"
+          command: ls
 
   build:
     docker:
