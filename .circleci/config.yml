@@ -17,7 +17,7 @@ jobs:
       - image: cimg/node:21.2.0
     steps:
       - attach_workspace:
-            at: ~/
+          at: ~/repo
       - checkout
       - run:
           name: "Yarn install"
@@ -29,9 +29,9 @@ jobs:
           name: "LS"
           command: ls -d $PWD/*
       - persist_to_workspace:
-            root: ~/
-            paths:
-                - repo
+          root: ~/
+          paths:
+            - repo
 #      - run:
 #            name: "Deploy app"
 #            command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
