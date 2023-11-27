@@ -23,7 +23,8 @@ jobs:
 
 
   install:
-    docker: 
+    working_directory: ~/repo
+    docker:
       - image: cimg/node:21.2.0
     steps:
       - attach_workspace:
