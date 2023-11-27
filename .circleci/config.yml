@@ -1,6 +1,6 @@
 version: 2.1
 
-working_directory: /tmp
+working_directory: /repo
 
 orbs:
   aws-cli: circleci/aws-cli@4.1.2
@@ -28,7 +28,7 @@ jobs:
           command: ls
       - run:
           name: "LS TMP"
-          command: cd /tmp && ls
+          command: cd /repo && ls
 
       - run:
             name: "Deploy app"
