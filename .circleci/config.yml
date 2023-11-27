@@ -4,24 +4,72 @@ orbs:
   aws-cli: circleci/aws-cli@4.1.2
 
 jobs:
-  say-hello:
-    docker:
-      - image: cimg/base:stable
+  checkout_code:
+    docker: 
+      - image: cimg/node:18.12.1
     steps:
       - checkout
-      - run: echo "Hello"
-  say-hi:
-    docker:
-      - image: cimg/base:stable
+
+  install:
+    docker: 
+      - image: cimg/node:18.12.1
     steps:
       - checkout
       - run:
-          name: "Echo hi"
-          command: echo "Hi"
+          name: "Yarn install"
+          command: yarn
+
+  build:
+    docker:
+      - image: cimg/node:18.12.1
+    steps:
+      - checkout 
+      - run:
+          name: "Build application"
+          command: yarn build
+
+  deploy:
+    docker:
+      - image: cimg/node:18.12.1
+    steps:
+      - checkout
+      - run:
+          name: "Deploy app"
+          command: echo "Deploy"
 
 workflows:
-  hello_and_hi:
+  build_and_deploy:
     jobs:
-      - say-hello
-      - say-hi
+      - checkout_code
+      - install:
+          requires:
+            - checkout_code
+      - build:
+          requires:
+            - install
+      - deploy:
+          requires:
+            - build
+
+# jobs:
+#   say-hello:
+#     docker:
+#       - image: cimg/base:stable
+#     steps:
+#       - checkout
+#       - run: echo "Hello"
+#   say-hi:
+#     docker:
+#       - image: cimg/base:stable
+#     steps:
+#       - checkout
+#       - run:
+#           name: "Echo hi"
+#           command: echo "Hi"
+
+# workflows:
+#   hello_and_hi:
+#     jobs:
+#       - say-hello
+#       - say-hi
          
