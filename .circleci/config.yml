@@ -35,9 +35,10 @@ jobs:
 #      - run:
 #            name: "Deploy app"
 #            command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
-      - run:
-          name: "LS"
-          command: ls -d $PWD/*
+      - run: ls -A1 ~/repo
+#      - run:
+#          name: "LS"
+#          command: ls -d $PWD/*
 
   build:
     docker:
