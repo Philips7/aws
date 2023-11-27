@@ -25,7 +25,7 @@ jobs:
           command: yarn build
       - run:
           name: "LS"
-          command: ls
+          command: ls -d $PWD/*
       - persist_to_workspace:
             root: ~/
             paths:
@@ -35,7 +35,7 @@ jobs:
 #            command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
       - run:
           name: "LS"
-          command: ls
+          command: ls -d $PWD/*
 
   build:
     docker:
