@@ -65,16 +65,16 @@ jobs:
 workflows:
   build_and_deploy:
     jobs:
-      - checkout_code
-      - install:
-          requires:
-            - checkout_code
+#      - checkout_code
+#      - install:
+#          requires:
+#            - checkout_code
 #      - build:
 #          requires:
 #            - install
-      - deploy:
-          requires:
-            - install
+      - deploy
+#          requires:
+#            - install
 
 # jobs:
 #   say-hello:
