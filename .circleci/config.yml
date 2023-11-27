@@ -69,7 +69,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/repo
+          at: ~/
       - run: ls -d $PWD/*
       - run:
           name: "Deploy app"
