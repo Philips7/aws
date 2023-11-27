@@ -15,9 +15,15 @@ jobs:
       - image: cimg/node:21.2.0
     steps:
       - checkout
+      - restore_cache:
+          key: v1-deps-{{ checksum "yarn-lock.json" }}
       - run:
           name: "Yarn install"
           command: yarn
+      - save_cache:
+          key: v1-deps-{{ checksum "yarn-lock.json" }}
+          paths:
+            - node_modules
 
   build:
     docker:
