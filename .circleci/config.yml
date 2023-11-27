@@ -10,13 +10,13 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - checkout
+      - run:
+            name: "mkdir"
+            command: touch myFile.txt
       - persist_to_workspace:
             root: ~/
             paths:
               - repo
-      - run:
-          name: "mkdir"
-          command: touch myFile.txt
       - run:
           name: "LS"
           command: ls -d $PWD/*
