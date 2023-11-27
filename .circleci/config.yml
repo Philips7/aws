@@ -11,7 +11,7 @@ jobs:
           at: ~/repo
       - checkout
       - persist_to_workspace:
-          root: /tmp/dir
+          root: /~
           paths:
             - foo/bar
             - baz
