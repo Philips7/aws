@@ -51,8 +51,8 @@ jobs:
       - image: cimg/aws:2023.09
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/repo
+#      - attach_workspace:
+#          at: ~/repo
       - run: ls
       - run:
           name: "Deploy app"
