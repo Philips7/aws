@@ -6,13 +6,13 @@ orbs:
 jobs:
   checkout_code:
     docker: 
-      - image: cimg/node:18.12.1
+      - image: cimg/node:18.13.0
     steps:
       - checkout
 
   install:
     docker: 
-      - image: cimg/node:18.12.1
+      - image: cimg/node:18.13.0
     steps:
       - checkout
       - run:
@@ -21,7 +21,7 @@ jobs:
 
   build:
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:18.13.0
     steps:
       - checkout 
       - run:
@@ -30,7 +30,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:18.13.0
     steps:
       - checkout
       - run:
