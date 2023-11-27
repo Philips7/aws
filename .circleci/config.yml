@@ -1,6 +1,6 @@
 version: 2.1
 
-working_directory: ~/repo
+working_directory: ~/tmp
 
 jobs:
   checkout_code:
