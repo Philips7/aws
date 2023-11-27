@@ -15,6 +15,9 @@ jobs:
             paths:
               - repo
       - run:
+          name: "mkdir"
+          command: touch myFile.txt
+      - run:
           name: "LS"
           command: ls -d $PWD/*
 
