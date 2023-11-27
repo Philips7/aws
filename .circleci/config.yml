@@ -2,9 +2,6 @@ version: 2.1
 
 working_directory: ~/repo
 
-orbs:
-  aws-cli: circleci/aws-cli@4.1.2
-
 jobs:
   checkout_code:
     docker: 
@@ -52,11 +49,13 @@ jobs:
               - node_modules
 
   deploy:
-    executor: aws-cli/default
+    docker:
+      - image: cimg/aws:2023.09
     steps:
       - checkout
       - attach_workspace:
           at: ~/repo
+      - run: aws --version
       - run:
           name: "Deploy app"
           command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
