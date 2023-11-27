@@ -22,8 +22,11 @@ jobs:
           name: "Build application"
           command: yarn build
       - run:
-          name: "Deploy app"
+          name: "LS"
           command: ls
+      - run:
+            name: "Deploy app"
+            command: aws s3 sync dist/ s3://my-test-bucket-7878 --delete
 
   build:
     docker:
@@ -38,6 +41,10 @@ jobs:
       - run:
           name: "Deploy app"
           command: echo "Deploy"
+      - save_cache:
+            key: v1-deps-{{ checksum "yarn-lock" }}
+            paths:
+              - node_modules
 
   deploy:
     docker:
