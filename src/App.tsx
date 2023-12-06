@@ -2,10 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import {useTranslation} from "react-i18next";
 
 function App() {
   const [count, setCount] = useState(0)
 
+    const { t,  } = useTranslation();
+    document.title = t("title");
+    console.log(t("title"));
   return (
     <>
       <div>
@@ -26,7 +30,7 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">
-        AWS Amplify + Vite + React + TypeScript + Tailwind CSS + i18n
+          {t('title')}
       </p>
     </>
   )
