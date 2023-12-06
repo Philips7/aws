@@ -66,3 +66,12 @@ workflows:
       - install:
           requires:
             - checkout_code
+      - verify_locales:
+          requires:
+            - install
+      - lint:
+          requires:
+            - install
+      - type_check:
+          requires:
+            - install
