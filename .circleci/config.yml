@@ -51,12 +51,22 @@ jobs:
     <<: *node_defaults
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/
       - run: yarn verify-locales
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - repo
+
+    lint:
+      <<: *node_defaults
+      steps:
+        - attach_workspace:
+            at: ~/
+        - run: yarn lint
+
+    type_check:
+      <<: *node_defaults
+      steps:
+        - attach_workspace:
+            at: ~/
+        - run: yarn type-check
 
 workflows:
   development:
