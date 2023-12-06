@@ -135,6 +135,18 @@ jobs:
           paths:
             - codeclimate.json
 
+  upload_test_coverage:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            echo ${CC_TEST_REPORTER_ID}
+            ~/cc-test-reporter upload-coverage -i ~/codeclimate.json -r ${CC_TEST_REPORTER_ID}
+
+
 workflows:
   development:
     when: << pipeline.parameters.run_development_workflow >>
