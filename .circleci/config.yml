@@ -15,8 +15,29 @@ references:
     working_directory: ~/repo
     docker:
       - image: cimg/node:18.12.1
+  default_parameters_definition: &default_parameters_definition
+    rollbar_post_client_item_access_token:
+      type: env_var_name
+    app_environment:
+      type: env_var_name
+    li3ib_api_base_url:
+      type: env_var_name
+  staging_parameters: &staging_parameters
+    rollbar_post_client_item_access_token: REACT_APP_ROLLBAR_POST_CLIENT_ITEM_ACCESS_TOKEN
+    app_environment: STAGING_REACT_APP_ENVIRONMENT
+    li3ib_api_base_url: STAGING__REACT_APP_LI3IB_API_BASE_URL
 
-
+staging__unit_test: &staging__unit_test
+  - unit_test:
+      name: unit_test_staging
+      <<: *staging_parameters
+      requires:
+        - install
+        - install_cc_test_coverage_reporter
+      filters:
+        branches:
+          ignore:
+            - production
 
 jobs:
   checkout_code:
@@ -89,6 +110,31 @@ jobs:
           at: ~/
       - run: yarn type_check
 
+  unit_test:
+    <<: *node_defaults
+    parameters:
+      <<: *default_parameters_definition
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Before test run
+          command: ~/cc-test-reporter before-build
+      - run:
+          name: Run yarn test
+          command: >
+            REACT_APP_ROLLBAR_POST_CLIENT_ITEM_ACCESS_TOKEN=$<< parameters.rollbar_post_client_item_access_token >>
+            REACT_APP_ENVIRONMENT=$<< parameters.app_environment >>
+            REACT_APP_LI3IB_API_BASE_URL=$<< parameters.li3ib_api_base_url >>
+            yarn test:ci
+      - run:
+          name: Get coverage
+          command: ~/cc-test-reporter format-coverage -t lcov -o ~/tmp/codeclimate.json ~/coverage/lcov.info
+      - persist_to_workspace:
+          root: ~/tmp
+          paths:
+            - codeclimate.json
+
 workflows:
   development:
     when: << pipeline.parameters.run_development_workflow >>
@@ -100,6 +146,14 @@ workflows:
       - install_cc_test_coverage_reporter:
           requires:
             - checkout_code
+      - <<: *staging__unit_test
+      - upload_test_coverage:
+          requires:
+            - unit_test_staging
+          filters:
+            branches:
+              ignore:
+                - production
       - verify_locales:
           requires:
             - install
