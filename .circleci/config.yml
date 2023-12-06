@@ -52,7 +52,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - run: yarn verify-locales
+      - run:
+          name: Verify locales
+          command: |
+            yarn extract
+            if [[ `git diff --exit-code` ]]; then echo "Locales not extracted. Please extract and commit locale files by using 'yarn extract' command" && exit 1; fi
 
   lint:
     <<: *node_defaults
