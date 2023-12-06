@@ -1,113 +1,68 @@
 version: 2.1
 
+parameters:
+  run_development_workflow:
+    default: true
+    type: boolean
+
+
+orbs:
+  node: circleci/node@4.1
+  aws-cli: circleci/aws-cli@2.0.3
+
+references:
+  node_defaults: &node_defaults
+    working_directory: ~/repo
+    docker:
+      - image: cimg/node:18.12.1
+
+
 
 jobs:
   checkout_code:
-    working_directory: ~/repo
-    docker:
-      - image: cimg/node:21.2.0
+    <<: *node_defaults
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
+  install:
+    <<: *node_defaults
     steps:
       - attach_workspace:
           at: ~/repo
-      - checkout
-      - run:
-            name: "mkdir"
-            command: touch myFile.txt
-      - persist_to_workspace:
-            root: ~/
-            paths:
-              - repo
-      - run:
-          name: "LS"
-          command: ls -d $PWD/*
-
-
-  install:
-    working_directory: ~/repo
-    docker:
-      - image: cimg/node:21.2.0
-    steps:
-      - attach_workspace:
-            at: ~/repo
-      - checkout
-      - run:
-          name: "Yarn install"
-          command: yarn
-      - run:
-          name: "Build application"
-          command: yarn build
+      - restore_cache:
+          keys:
+            - v8-yarn-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v8-yarn-deps-{{ .Branch }}-
+            - v8-yarn-deps-
+      - run: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+      - save_cache:
+          key: v8-yarn-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
       - persist_to_workspace:
           root: ~/
           paths:
             - repo
-      - run:
-          name: "LS"
-          command: ls -d $PWD/*
 
-  build:
-    docker:
-      - image: cimg/node:21.2.0
+  verify_locales:
+    <<: *node_defaults
     steps:
-      - checkout
-      - restore_cache:
-            key: v1-deps-{{ checksum "yarn-lock" }}
-      - run:
-          name: "Build application"
-          command: yarn build
-      - run:
-          name: "Deploy app"
-          command: echo "Deploy"
-      - save_cache:
-            key: v1-deps-{{ checksum "yarn-lock" }}
-            paths:
-              - node_modules
-
-  deploy:
-    working_directory: ~/repo
-    docker:
-      - image: cimg/aws:2023.09
-    steps:
-      - checkout
       - attach_workspace:
-          at: ~/
-      - run: ls -d $PWD/*
-      - run:
-          name: "Deploy app"
-          command: aws s3 sync ./dist/ s3://my-test-bucket-787 --delete
+          at: ~/repo
+      - run: yarn verify-locales
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - repo
 
 workflows:
-  build_and_deploy:
+  development:
+    when: << pipeline.parameters.run_development_workflow >>
     jobs:
-#      - checkout_code
-      - install
-#          requires:
-#            - checkout_code
-#      - build:
-#          requires:
-#            - install
-      - deploy:
+      - checkout_code
+      - install:
           requires:
-            - install
-
-# jobs:
-#   say-hello:
-#     docker:
-#       - image: cimg/base:stable
-#     steps:
-#       - checkout
-#       - run: echo "Hello"
-#   say-hi:
-#     docker:
-#       - image: cimg/base:stable
-#     steps:
-#       - checkout
-#       - run:
-#           name: "Echo hi"
-#           command: echo "Hi"
-
-# workflows:
-#   hello_and_hi:
-#     jobs:
-#       - say-hello
-#       - say-hi
-         
+            - checkout_code
