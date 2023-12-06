@@ -54,19 +54,19 @@ jobs:
           at: ~/
       - run: yarn verify-locales
 
-    lint:
-      <<: *node_defaults
-      steps:
-        - attach_workspace:
-            at: ~/
-        - run: yarn lint
+  lint:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn lint
 
-    type_check:
-      <<: *node_defaults
-      steps:
-        - attach_workspace:
-            at: ~/
-        - run: yarn type-check
+  type_check:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn type-check
 
 workflows:
   development:
