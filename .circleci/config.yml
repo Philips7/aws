@@ -126,10 +126,7 @@ jobs:
       - run:
           name: Run yarn test
           command: >
-            REACT_APP_ROLLBAR_POST_CLIENT_ITEM_ACCESS_TOKEN=$<< parameters.rollbar_post_client_item_access_token >>
-            REACT_APP_ENVIRONMENT=$<< parameters.app_environment >>
-            REACT_APP_LI3IB_API_BASE_URL=$<< parameters.li3ib_api_base_url >>
-            yarn test:ci
+            yarn test
       - run:
           name: Get coverage
           command: ~/cc-test-reporter format-coverage -t lcov -o ~/tmp/codeclimate.json ~/coverage/lcov.info
