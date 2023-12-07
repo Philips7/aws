@@ -10,6 +10,7 @@ function App() {
     const { t,  } = useTranslation();
     document.title = t("title");
 
+
     console.log(t("title"));
   return (
     <>
