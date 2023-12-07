@@ -19,9 +19,15 @@ source_folder="locales/"
 target_folder="src/"
 
 if [ -d "$source_folder" ]; then
-  # Przeniesienie pliku do docelowego folderu
   mv "$source_folder" "$target_folder"
   echo -e "${GREEN}Locales folder moved successfully to $target_folder.${NOCOLOR}"
 else
   echo -e "${RED}Source folder does not exist.${NOCOLOR}"
 fi
+
+# Add scripts:
+# "type_check": "tsc",
+# "extract": "i18next"
+
+# Import locales to src/main.tsx
+# import "./locales/i18n/config";
