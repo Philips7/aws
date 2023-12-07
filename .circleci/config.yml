@@ -163,25 +163,25 @@ jobs:
             echo ${CC_TEST_REPORTER_ID}
             ~/cc-test-reporter upload-coverage -i ~/codeclimate.json -r ${CC_TEST_REPORTER_ID}
 
-    build_app:
-      <<: *node_defaults
-      resource_class: large
-      parameters:
-        <<: *default_parameters_definition
-      steps:
-        - attach_workspace:
-            at: ~/
-        - run:
-            name: Build app
-            command: >
-              REACT_APP_ROLLBAR_POST_CLIENT_ITEM_ACCESS_TOKEN=$<< parameters.rollbar_post_client_item_access_token >>
-              REACT_APP_ENVIRONMENT=$<< parameters.app_environment >>
-              REACT_APP_LI3IB_API_BASE_URL=$<< parameters.li3ib_api_base_url >>
-              yarn build
-        - persist_to_workspace:
-            root: ~/
-            paths:
-              - repo/build
+  build_app:
+    <<: *node_defaults
+    resource_class: large
+    parameters:
+      <<: *default_parameters_definition
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Build app
+          command: >
+            REACT_APP_ROLLBAR_POST_CLIENT_ITEM_ACCESS_TOKEN=$<< parameters.rollbar_post_client_item_access_token >>
+            REACT_APP_ENVIRONMENT=$<< parameters.app_environment >>
+            REACT_APP_LI3IB_API_BASE_URL=$<< parameters.li3ib_api_base_url >>
+            yarn build
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - repo/build
 
 workflows:
   development:
