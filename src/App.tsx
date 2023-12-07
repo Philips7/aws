@@ -11,6 +11,8 @@ function App() {
     document.title = t("title");
 
 
+
+
     console.log(t("title"));
   return (
     <>
