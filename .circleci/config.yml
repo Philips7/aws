@@ -13,7 +13,7 @@ references:
   node_defaults: &node_defaults
     working_directory: ~/repo
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:20.10.0
   default_parameters_definition: &default_parameters_definition
     rollbar_post_client_item_access_token:
       type: env_var_name

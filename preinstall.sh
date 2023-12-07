@@ -1,33 +1,37 @@
 #!/bin/bash
 
-NOCOLOR='\033[0m'
-GREEN='\033[0;32m'
-RED='\033[0;31m'
+set -e
 
-# Install i18n packages
-yarn add i18next react-i18next i18next-parser i18next-browser-languagedetector i18next-http-backend
+node_version=$(node -v)
+echo "Node.js version: $node_version"
 
-# Check if installation was successful
-if [ $? -eq 0 ]; then
-  echo -e "${GREEN}Install was successful.${NOCOLOR}"
+string1="v"
+version="20.10.0"
+required_version="$string1$version"
+
+echo $node_version
+echo $required_version
+
+if [[ "$node_version" == "$required_version" ]]; then
+  echo "Node.js version meets the requirement."
 else
-  echo -e "${RED} Error during installation${NOCOLOR}".
+  echo "Node.js version does not meet the requirement."
+  exit 1
 fi
 
-# Move locales folder to src
-source_folder="locales/"
-target_folder="src/"
+bash ./install_jest_dependencies.sh
+bash ./install_i18n_dependencies.sh
 
-if [ -d "$source_folder" ]; then
-  mv "$source_folder" "$target_folder"
-  echo -e "${GREEN}Locales folder moved successfully to $target_folder.${NOCOLOR}"
-else
-  echo -e "${RED}Source folder does not exist.${NOCOLOR}"
-fi
+# Translations
+node ./move_locales.cjs
+node ./add_locales_import.cjs
 
-# Add scripts:
-# "type_check": "tsc",
-# "extract": "i18next"
+# Jest
+node ./move_tests.cjs
 
-# Import locales to src/main.tsx
-# import "./locales/i18n/config";
+# Update package.json
+node ./update_package_json.cjs
+
+# Update CircleCi node version
+node ./update_circleci_node.cjs
+
