@@ -27,6 +27,13 @@ references:
     app_environment: STAGING_REACT_APP_ENVIRONMENT
     li3ib_api_base_url: STAGING__REACT_APP_LI3IB_API_BASE_URL
 
+require_ci_staging: &require_ci_staging
+  requires:
+    - verify_locales
+    - lint
+    - type_check
+    - unit_test_staging
+
 staging__unit_test: &staging__unit_test
   - unit_test:
       name: unit_test_staging
@@ -34,6 +41,16 @@ staging__unit_test: &staging__unit_test
       requires:
         - install
         - install_cc_test_coverage_reporter
+      filters:
+        branches:
+          ignore:
+            - production
+
+staging__build_app: &staging__build_app
+  - build_app:
+      name: build_app_staging
+      <<: *staging_parameters
+      <<: *require_ci_staging
       filters:
         branches:
           ignore:
@@ -175,3 +192,5 @@ workflows:
       - type_check:
           requires:
             - install
+      - <<: *staging__build_app
+
