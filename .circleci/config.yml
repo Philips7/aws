@@ -121,8 +121,8 @@ jobs:
           name: Before test run
           command: ~/cc-test-reporter before-build
       - run:
-          name: cd src && ls
-          command: ls
+          name: cd src/__tests__ && ls
+          command: cd src/__tests__ && ls
       - run:
           name: Run yarn test
           command: >
