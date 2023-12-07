@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render } from "@testing-library/react"
-import App from "../src/App.tsx";
+import App from "../App.tsx";
 
 test('demo', () => {
     expect(true).toBe(true)
