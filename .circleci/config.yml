@@ -55,6 +55,21 @@ staging__build_app: &staging__build_app
           ignore:
             - production
 
+staging__deploy_app: &staging__deploy_app
+  - s3_deploy_app:
+      name: s3_deploy_app_staging
+      aws_key_id: STAGING__AWS_ACCESS_KEY_ID
+      aws_secret_key: STAGING__AWS_SECRET_ACCESS_KEY
+      aws_region: STAGING__AWS_REGION
+      aws_bundle_bucket: STAGING__AWS_BUCKET_CLIENT
+      cloudfront_distribution_id: STAGING__CLOUDFRONT_CLIENT
+      requires:
+        - build_app_staging
+      filters:
+        branches:
+          only:
+            - main
+
 jobs:
   checkout_code:
     <<: *node_defaults
@@ -211,3 +226,4 @@ workflows:
           requires:
             - install
       - <<: *staging__build_app
+      - <<: *staging__deploy_app
