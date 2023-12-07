@@ -121,6 +121,9 @@ jobs:
           name: Before test run
           command: ~/cc-test-reporter before-build
       - run:
+          name: ls
+          command: ls
+      - run:
           name: Run yarn test
           command: >
             REACT_APP_ROLLBAR_POST_CLIENT_ITEM_ACCESS_TOKEN=$<< parameters.rollbar_post_client_item_access_token >>
