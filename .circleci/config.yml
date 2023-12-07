@@ -196,6 +196,34 @@ jobs:
           root: ~/
           paths:
             - repo/dist
+  s3_deploy_app:
+    executor: aws-cli/default
+    working_directory: ~/
+    parameters:
+      aws_key_id:
+        type: env_var_name
+      aws_secret_key:
+        type: env_var_name
+      aws_region:
+        type: env_var_name
+      aws_bundle_bucket:
+        type: env_var_name
+      cloudfront_distribution_id:
+        type: env_var_name
+    steps:
+      - attach_workspace:
+          at: ~/
+      - aws-cli/setup:
+          aws-access-key-id: << parameters.aws_key_id >>
+          aws-secret-access-key: << parameters.aws_secret_key >>
+          aws-region: << parameters.aws_region >>
+      - run:
+          name: Deploy app to S3
+          command: aws s3 sync ./repo/build/ s3://${<< parameters.aws_bundle_bucket >>} --delete
+      - run:
+          name: Invalidate cloudfront distribution
+          command: aws cloudfront create-invalidation --distribution-id ${<< parameters.cloudfront_distribution_id >>} --paths "/*"
+
 
 workflows:
   development:
