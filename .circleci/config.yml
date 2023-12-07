@@ -68,7 +68,7 @@ staging__deploy_app: &staging__deploy_app
       filters:
         branches:
           only:
-            - main
+            - circleci-for-netguru
 
 jobs:
   checkout_code:
