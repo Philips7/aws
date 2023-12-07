@@ -11,6 +11,9 @@ function App() {
     document.title = t("title");
 
 
+    const changeLng = () => {
+        document.title = "change lng"
+    }
 
 
     console.log(t("title"));
@@ -29,6 +32,7 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
+          <button onClick={changeLng}>DASDA</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
